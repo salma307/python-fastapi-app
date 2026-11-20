@@ -68,3 +68,7 @@ verify-env:
         run: |
           echo "Deploying version: ${{ needs.build.outputs.full_version }}"
           echo "Target environment: ${{ inputs.environment }}"
+  call-greeting:
+    uses: ./.github/workflows/greeting.yml
+    with:
+      recipient: ${{ inputs.environment }}

@@ -19,3 +19,8 @@ jobs:
       - name: Print environment variables
         run: |
           echo "Application $APP_NAME built on $BUILD_DATE"
+verify-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print APP_NAME
+        run: echo "APP_NAME is $APP_NAME"

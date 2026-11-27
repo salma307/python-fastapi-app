@@ -1,42 +1,82 @@
-\# REPONSES – TP 6 : Variables d'environnement, Inputs et Outputs
+
+
+\# TP 8 – Stratégies GitHub Actions
 
 
 
-\## Q1. Pourquoi la variable n'est-elle pas disponible dans la step qui l'a définie ?
+\## Q1. Combien de jobs sont générés ? Donnez la liste des combinaisons.
 
 
 
-La variable enregistrée dans GITHUB\_ENV est disponible uniquement dans les steps suivantes du même job. Elle n'est pas disponible dans la step qui l'a définie, car GitHub Actions applique les modifications d'environnement après la fin de cette step.
+6 jobs sont générés :
 
 
 
-\## Q2. Quelle est la portée de GITHUB\_ENV ?
+\- Ubuntu / Python 3.11
+
+\- Ubuntu / Python 3.12
+
+\- Ubuntu / Python 3.13
+
+\- Windows / Python 3.11
+
+\- Windows / Python 3.12
+
+\- Windows / Python 3.13
 
 
 
-GITHUB\_ENV permet de partager les variables entre les différentes steps d'un même job. Elles ne sont pas automatiquement accessibles dans les autres jobs. Dans le job verify-env, APP\_NAME est donc vide.
+\## Q2. Combien de jobs au total ?
 
 
 
-\## Q3. Que se passe-t-il si on utilise > au lieu de >> dans GITHUB\_OUTPUT ?
+6 jobs au total.
 
 
 
-L'opérateur > écrase le contenu précédent du fichier. Si plusieurs outputs sont définis dans la même step, les précédents peuvent être supprimés. L'opérateur >> ajoute les nouvelles valeurs sans effacer les anciennes.
+La matrice initiale contient 6 combinaisons.
+
+L'exclusion de Windows avec Python 3.11 donne 5 jobs.
+
+L'ajout d'Ubuntu avec Python 3.14 donne 6 jobs.
 
 
 
-\## Q4. Pourquoi GITHUB\_ENV ne suffit-il pas ici ?
+\## Q3. Que se passerait-il si vous tentiez d'exclure la combinaison 3.14 ? Pourquoi ?
 
 
 
-GITHUB\_ENV permet de partager des variables uniquement entre les steps d'un même job. Pour communiquer entre plusieurs jobs, il faut utiliser GITHUB\_OUTPUT, déclarer les outputs du job et utiliser needs pour récupérer les résultats.
+La combinaison Python 3.14 ne serait pas supprimée, car include est appliqué après exclude.
+
+Il faut supprimer cette combinaison directement dans include.
 
 
 
-\## Q5. Que se passe-t-il si on retire needs: build du job deploy ?
+\## Q4. Quelle est la différence observée ? Dans quel cas choisiriez-vous true ? false ?
 
 
 
-Le job deploy ne dépend plus du job build et peut démarrer en parallèle. Il n'attend donc plus sa fin. De plus, il ne peut plus accéder correctement à ses outputs avec needs.build.outputs.full\_version.
+Avec fail-fast: true, dès qu'un job échoue, les autres jobs en cours ou en attente peuvent être annulés.
+
+
+
+Avec fail-fast: false, tous les jobs continuent leur exécution même si certains échouent.
+
+
+
+Je choisirais true pour arrêter rapidement les tests en cas d'erreur.
+
+Je choisirais false pour obtenir les résultats de toutes les combinaisons.
+
+
+
+\## Q5. Donnez deux raisons d'utiliser max-parallel en entreprise.
+
+
+
+1\. Réduire les coûts liés à l'utilisation simultanée de plusieurs runners.
+
+2\. Limiter la consommation des ressources et éviter la surcharge de l'infrastructure.
+
+
 

@@ -8,22 +8,11 @@ jobs:
   test:
     name: Test on ${{ matrix.os }} - Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental == true }}
 
     strategy:
-      fail-fast: true
       matrix:
         os: [ubuntu-latest, windows-latest]
         python-version: ["3.11", "3.12", "3.13"]
-
-        exclude:
-          - os: windows-latest
-            python-version: "3.11"
-
-        include:
-          - os: ubuntu-latest
-            python-version: "3.14"
-            experimental: true
 
     steps:
       - name: Checkout repository
